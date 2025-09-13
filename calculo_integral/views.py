@@ -8,7 +8,24 @@ def calcular_integral(request):
             funcao = request.POST.get('funcao')
             a = float(request.POST.get('Limite inferior'))
             b = float(request.POST.get('limite_superior'))
-            n = int(request.POST.get('num_retangulos', 1000))
-            # vai ser por metodo dos retangulos
+            n = int(request.POST.get('numero_retangulos', 1000))
+
+            resultado = soma_rieamann(funcao, a, b, n) #funcao para ser criada
+
+            context = {
+                'resultado' : resultado,
+                'funcao' : funcao,
+                'limite_inferior' : a,
+                'limite_superior' : b,
+                'numero_retangulos' : n  
+            }
+
+            return render(request, 'calculo_integral/resultado.html', context) 
+        #html tambem precisa ser feito 
+    
         except Exception as e:
-            # definir o except depois 
+            return render(request, 'calcular_integral/home.html',{
+                'erro' : f'Erro nesse calculo: {str:(e)}'
+            })
+    
+    return render(request,'calcular_integral/home.html')

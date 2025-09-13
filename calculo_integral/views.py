@@ -10,7 +10,7 @@ def calcular_integral(request):
             b = float(request.POST.get('limite_superior'))
             n = int(request.POST.get('numero_retangulos', 1000))
 
-            resultado = soma_rieamann(funcao, a, b, n) #funcao para ser criada
+            resultado = soma_rieamann(funcao, a, b, n) 
 
             context = {
                 'resultado' : resultado,
@@ -29,3 +29,17 @@ def calcular_integral(request):
             })
     
     return render(request,'calcular_integral/home.html')
+def soma_riemann(funcao_str, a, b, n):
+   # Vai calcular a integral usaando método dos retângulos
+   h = (b - a) / n #largura dos retangulos
+   soma = 0
+
+   for i in range(n):
+       x = a + i * h + h/2
+       try:
+           y = avaliar_funcao(funcao_str, x) #fazer essa funcao
+           soma += y * h
+       except:
+           continue
+       
+    return soma

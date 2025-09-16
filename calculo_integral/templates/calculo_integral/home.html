@@ -1,0 +1,74 @@
+
+{% extends 'calculo_integral/base.html' %}
+
+{% block title %}Início - Calculadora de Integral{% endblock %}
+
+{% block content %}
+
+
+{% if erro %}
+    <div class="error">
+        <strong>Erro:</strong> {{ erro }}
+    </div>
+{% endif %}
+
+
+<div style="background: #e7f3ff; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+    <h3>Como usar:</h3>
+    <p>Esta calculadora resolve integrais usando o <strong>Método dos Retângulos (Soma de Riemann)</strong>.</p>
+    <p><strong>Exemplos de funções:</strong></p>
+    <ul>
+        <li><code>x**2</code> - função quadrática</li>
+        <li><code>sin(x)</code> - função seno</li>
+        <li><code>exp(x)</code> - e elevado a x</li>
+        <li><code>sqrt(x)</code> - raiz quadrada</li>
+        <li><code>x**3 - 2*x + 1</code> - polinômio</li>
+    </ul>
+</div>
+
+
+<form method="post" action="/calcular/">
+   
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="funcao">Digite a função f(x):</label>
+        <input type="text" 
+               name="funcao" 
+               id="funcao" 
+               placeholder="Ex: x**2" 
+               value="{{ request.POST.funcao|default:'' }}" 
+               required>
+    </div>
+    
+    <div style="display: flex; gap: 20px;">
+        <div class="form-group" style="flex: 1;">
+            <label for="limite_inferior">Limite inferior (a):</label>
+            <input type="number" 
+                   name="limite_inferior" 
+                   id="limite_inferior" 
+                   step="any" 
+                   placeholder="0" 
+                   value="{{ request.POST.limite_inferior|default:'' }}" 
+                   required>
+        </div>
+        
+        <div class="form-group" style="flex: 1;">
+            <label for="limite_superior">Limite superior (b):</label>
+            <input type="number" 
+                   name="limite_superior" 
+                   id="limite_superior" 
+                   step="any" 
+                   placeholder="1" 
+                   value="{{ request.POST.limite_superior|default:'' }}" 
+                   required>
+        </div>
+    </div>
+    
+    <button type="submit" style="width: 100%; padding: 15px; font-size: 18px;">
+        🧮 Calcular Integral
+    </button>
+</form>
+
+{% endblock %}
+

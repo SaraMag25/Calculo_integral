@@ -1,0 +1,83 @@
+
+{% extends 'calculo_integral/base.html' %}
+
+{% block title %}Resultado - Calculadora de Integral{% endblock %}
+
+{% block header %}📊 Resultado da Integral{% endblock %}
+
+{% block content %}
+
+<div style="text-align: center; background: #f8f9fa; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
+    <h2 style="font-family: 'Times New Roman', serif; margin: 0;">
+        ∫<sub>{{ limite_inferior }}</sub><sup>{{ limite_superior }}</sup> {{ funcao }} dx
+    </h2>
+</div>
+
+
+<div style="background: #28a745; color: white; padding: 30px; text-align: center; border-radius: 4px; margin-bottom: 20px;">
+    <h2 style="margin: 0;">Resultado da Integral:</h2>
+    <div style="font-size: 2.5em; font-weight: bold; margin: 15px 0;">
+        {{ resultado|floatformat:8 }}
+    </div>
+</div>
+
+
+<div style="background: #f8f9fa; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
+    <h3>Detalhes do Cálculo:</h3>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Função:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">f(x) = {{ funcao }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Intervalo:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">[{{ limite_inferior }}, {{ limite_superior }}]</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Retângulos usados:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ numero_retangulos }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Erro estimado:</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{ erro_estimado|floatformat:10 }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px;"><strong>Método:</strong></td>
+            <td style="padding: 8px;">Soma de Riemann (Ponto Médio)</td>
+        </tr>
+    </table>
+</div>
+
+
+<div style="text-align: center; margin-bottom: 20px;">
+    {% if erro_estimado < 0.000001 %}
+        <span style="background: #28a745; color: white; padding: 8px 16px; border-radius: 20px;">
+            ✅ Alta Precisão
+        </span>
+    {% elif erro_estimado < 0.001 %}
+        <span style="background: #ffc107; color: #333; padding: 8px 16px; border-radius: 20px;">
+            ⚠️ Precisão Média
+        </span>
+    {% else %}
+        <span style="background: #dc3545; color: white; padding: 8px 16px; border-radius: 20px;">
+            ❌ Baixa Precisão
+        </span>
+    {% endif %}
+</div>
+
+
+<div style="text-align: center;">
+    <a href="/" style="background: #007bff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 4px; margin: 0 10px;">
+        🔄 Nova Integral
+    </a>
+    <a href="/visual/" style="background: #17a2b8; color: white; padding: 12px 20px; text-decoration: none; border-radius: 4px; margin: 0 10px;">
+        📊 Ver Visualização
+    </a>
+    <button onclick="window.print()" style="background: #6c757d; color: white; padding: 12px 20px; border: none; border-radius: 4px; margin: 0 10px; cursor: pointer;">
+        🖨️ Imprimir
+    </button>
+</div>
+
+{% endblock %}
+

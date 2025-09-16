@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import math
+import re
 
 def home(request):
     return render(request, 'calculo_integral/home.html') #ter que fazer esse html
@@ -10,7 +11,8 @@ def calcular_integral(request):
             funcao = request.POST.get('funcao')
             a = float(request.POST.get('Limite inferior'))
             b = float(request.POST.get('limite_superior'))
-            n = int(request.POST.get('numero_retangulos', 1000))
+            tolerancia = float(request.POST.get('tolerancia', 1e-6))
+            metodo = request.POST.get('metodo', 'meio') 
 
             resultado = soma_rieamann(funcao, a, b, n) 
 

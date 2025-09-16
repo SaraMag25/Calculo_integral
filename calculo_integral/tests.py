@@ -23,4 +23,13 @@ class IntegralTestCase(TestCase):
         resultado = soma_rieamann("sen(x)", 0, math.pi, 1000)
         self.assertAlmostEqual(resultado, 2, places=1)
     
+    def test_integral_logaritmo(self):
+        #Teste: ∫ln(x) dx de 1 a e ≈ 1
+        resultado = soma_rieamann("math.log(x)", 1, math.e, 1000)
+        self.assertAlmostEqual(resultado, 1, places=1)
     
+    def test_avaliacao_funcao(self):
+        #Testa se a função avalia corretamente
+        self.assertEqual(ajeita_funcao("x**2", 2), 4)
+        self.assertEqual(ajeita_funcao("2*x + 1", 3), 7)
+        self.assertAlmostEqual(ajeita_funcao("sen(x)", math.pi/2), 1, places=5)

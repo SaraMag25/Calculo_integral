@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+#from django.http import JsonResponse
 from .models import CalculandoIntegrais
 import math
-import re
+#import re
 
 def home(request):
     return render(request, 'calculo_integral/home.html') 

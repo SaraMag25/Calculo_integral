@@ -11,14 +11,14 @@ LINK VIDEO:
 ## Como rodar
 
 ```bash
-# Instalar dependências
+#Instalar dependências
 pip install -r requirements.txt
 
-# Configurar banco
+#Configurar banco
 python manage.py makemigrations
 python manage.py migrate
 
-# Rodar servidor
+#Rodar servidor
 python manage.py runserver
 ```
 
@@ -33,7 +33,6 @@ Acesse: `http://127.0.0.1:8000/`
 ## Testes
 
 ```bash
-# Rodar testes
 python manage.py test calculo_integral
 ```
 

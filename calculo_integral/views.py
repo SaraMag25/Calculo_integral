@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from .models import CalculandoIntegrais
 import math
 import re
 
@@ -15,8 +16,7 @@ def calcular_integral(request):
 
             resultado, n_usado, erro_estimado = calcular_integral_adaptativa(funcao, a, b, tolerancia)
             
-            from .models import CalculoIntegral
-            calculo = CalculoIntegral.objects.create(
+            calculo = CalculandoIntegrais.objects.create(
                 funcao=funcao,
                 limite_inferior=a,
                 limite_superior=b,
@@ -123,18 +123,16 @@ def visualizar_integral(request):
     
     return render(request, 'calculo_integral/visualizacao.html', context)
 def ajeita_funcao(funcao_str, x):
-    # Substituições básicas
+
     funcao = funcao_str.replace('^', '**')
-    funcao = re.sub(r'\bsin\b', 'math.sin', funcao)
-    funcao = re.sub(r'\bcos\b', 'math.cos', funcao)
-    funcao = re.sub(r'\btan\b', 'math.tan', funcao)
-    funcao = re.sub(r'\bexp\b', 'math.exp', funcao)
-    funcao = re.sub(r'\bln\b', 'math.log', funcao)
-    funcao = re.sub(r'\blog\b', 'math.log10', funcao)
-    funcao = re.sub(r'\bsqrt\b', 'math.sqrt', funcao)
-    funcao = re.sub(r'\bpi\b', 'math.pi', funcao)
-    funcao = re.sub(r'\be\b(?!\w)', 'math.e', funcao)
+    funcao = funcao.replace("ln", "log")  # ln vira log base e
     
-    ambiente = {"x": x, "math": math, "__builtins__": {}}
+
+    ambiente = {"__builtins__": None, "x": x}
+    
+    for nome in dir(math):
+        if not nome.startswith("_"):  # ignora privados
+            ambiente[nome] = getattr(math, nome)
+
     return eval(funcao, ambiente)
 

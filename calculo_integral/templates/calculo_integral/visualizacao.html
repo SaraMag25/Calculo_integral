@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Visualização - Calculadora de Integral</title>
+    <title>Calculadora de Integral</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
             background: #f5f5f5;
         }
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -68,46 +68,14 @@
         button:hover {
             background: #218838;
         }
-        .explicacao {
-            background: #e7f3ff;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        .controles {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        .resultado-visual {
+        .resultado {
             background: #d4edda;
             padding: 15px;
             border-radius: 4px;
-            margin-bottom: 20px;
+            margin-top: 20px;
             text-align: center;
-        }
-        .visualizacao {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .info-calculo {
-            background: #f8f9fa;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: monospace;
-            text-align: left;
-        }
-        .flex-row {
-            display: flex;
-            gap: 15px;
-        }
-        .flex-item {
-            flex: 1;
+            font-size: 1.3em;
+            font-weight: bold;
         }
         .error {
             background: #f8d7da;
@@ -125,183 +93,67 @@
         <nav class="nav">
             <a href="/">🏠 Início</a>
             <a href="/calcular/">🧮 Calcular</a>
-            <a href="/visual/">📊 Visualizar</a>
+            <a href="/visual/">📊 Integral</a>
         </nav>
         
-        <h1>📊 Visualização da Soma de Riemann</h1>
-        
+        <h1>🧮 Calculadora de Integral (Soma de Riemann)</h1>
+
         <!-- Mostrar erro se houver -->
         {% if erro %}
             <div class="error">
                 <strong>Erro:</strong> {{ erro }}
             </div>
         {% endif %}
-        
-        <!-- Explicação -->
-        <div class="explicacao">
-            <h3>Como funciona a Soma de Riemann:</h3>
-            <p>A integral é aproximada pela soma das áreas de vários retângulos sob a curva da função.</p>
-            <p>Quanto mais retângulos, maior a precisão do resultado!</p>
-        </div>
-        
-        <!-- Controles -->
-        <div class="controles">
-            <h3>Controles da Visualização:</h3>
-            <form method="post">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="funcao">Função f(x):</label>
-                    <input type="text" 
-                           name="funcao" 
-                           id="funcao" 
-                           value="{{ funcao }}" 
-                           placeholder="Ex: x**2, sin(x), exp(x)">
-                </div>
-                
-                <div class="flex-row">
-                    <div class="flex-item">
-                        <div class="form-group">
-                            <label for="limite_inferior">Limite Inferior (a):</label>
-                            <input type="number" 
-                                   name="limite_inferior" 
-                                   id="limite_inferior" 
-                                   value="{{ limite_inferior }}" 
-                                   step="any">
-                        </div>
-                    </div>
-                    <div class="flex-item">
-                        <div class="form-group">
-                            <label for="limite_superior">Limite Superior (b):</label>
-                            <input type="number" 
-                                   name="limite_superior" 
-                                   id="limite_superior" 
-                                   value="{{ limite_superior }}" 
-                                   step="any">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="retangulos">Número de Retângulos:</label>
-                    <input type="number" 
-                           name="retangulos" 
-                           id="retangulos" 
-                           value="{{ retangulos }}" 
-                           min="5" max="100">
-                </div>
-                
-                <button type="submit">🔄 Calcular</button>
-            </form>
-        </div>
-        
-        <!-- Resultado (se houver) -->
-        {% if tem_resultado %}
-            <div class="resultado-visual">
-                <h3>Resultado com {{ retangulos }} retângulos:</h3>
-                <div style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">
-                    ∫<sub>{{ limite_inferior }}</sub><sup>{{ limite_superior }}</sup> {{ funcao }} dx ≈ {{ resultado|floatformat:6 }}
-                </div>
+
+        <!-- Formulário -->
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="funcao">Função f(x):</label>
+                <input type="text" 
+                       name="funcao" 
+                       id="funcao" 
+                       value="{{ funcao }}" 
+                       placeholder="Ex: x**2, sin(x), exp(x)">
             </div>
-            
-            <!-- Informações do cálculo -->
-            <div class="info-calculo">
-                <h4>📋 Informações do Cálculo:</h4>
-                <p><strong>Função:</strong> f(x) = {{ funcao }}</p>
-                <p><strong>Intervalo:</strong> [{{ limite_inferior }}, {{ limite_superior }}]</p>
-                <p><strong>Número de retângulos:</strong> {{ retangulos }}</p>
-                <p><strong>Largura de cada retângulo:</strong> {{ largura_retangulo|floatformat:6 }}</p>
-                <p><strong>Método:</strong> Ponto médio (mais preciso)</p>
-                <p><strong>Resultado aproximado:</strong> {{ resultado|floatformat:8 }}</p>
+
+            <div class="form-group">
+                <label for="limite_inferior">Limite Inferior (a):</label>
+                <input type="number" 
+                       name="limite_inferior" 
+                       id="limite_inferior" 
+                       value="{{ limite_inferior }}" 
+                       step="any">
             </div>
-            
-            <!-- Simulação visual -->
-            <div class="visualizacao">
-                <h3>🎨 Representação Visual</h3>
-                <div style="border: 1px solid #ccc; height: 200px; display: flex; align-items: center; justify-content: center; background: linear-gradient(45deg, #f0f8ff 25%, transparent 25%, transparent 75%, #f0f8ff 75%), linear-gradient(45deg, #f0f8ff 25%, transparent 25%, transparent 75%, #f0f8ff 75%); background-size: 20px 20px; background-position: 0 0, 10px 10px;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 3em; margin-bottom: 10px;">📊</div>
-                        <div><strong>{{ retangulos }} retângulos</strong></div>
-                        <div>aproximando a área sob</div>
-                        <div><strong>f(x) = {{ funcao }}</strong></div>
-                        <div style="margin-top: 10px; font-size: 1.2em; color: #007bff;">
-                            <strong>≈ {{ resultado|floatformat:4 }}</strong>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 15px; text-align: left;">
-                    <h4>Como interpretar:</h4>
-                    <ul>
-                        <li>Cada retângulo tem largura = {{ largura_retangulo|floatformat:4 }}</li>
-                        <li>A altura é determinada pelo valor da função no ponto médio</li>
-                        <li>Área total ≈ soma de todas as áreas dos retângulos</li>
-                        <li>Mais retângulos = maior precisão!</li>
-                    </ul>
-                </div>
+
+            <div class="form-group">
+                <label for="limite_superior">Limite Superior (b):</label>
+                <input type="number" 
+                       name="limite_superior" 
+                       id="limite_superior" 
+                       value="{{ limite_superior }}" 
+                       step="any">
             </div>
-            
-            <!-- Teste com diferentes números de retângulos -->
-            <div style="background: #fff3cd; padding: 15px; border-radius: 4px; margin-top: 20px;">
-                <h4>💡 Compare a Precisão:</h4>
-                <p>Teste a mesma função com diferentes números de retângulos e veja como a precisão muda:</p>
-                <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-                    <form method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="funcao" value="{{ funcao }}">
-                        <input type="hidden" name="limite_inferior" value="{{ limite_inferior }}">
-                        <input type="hidden" name="limite_superior" value="{{ limite_superior }}">
-                        <input type="hidden" name="retangulos" value="10">
-                        <button type="submit" style="width: auto; padding: 8px 12px; margin: 2px;">10 retângulos</button>
-                    </form>
-                    
-                    <form method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="funcao" value="{{ funcao }}">
-                        <input type="hidden" name="limite_inferior" value="{{ limite_inferior }}">
-                        <input type="hidden" name="limite_superior" value="{{ limite_superior }}">
-                        <input type="hidden" name="retangulos" value="50">
-                        <button type="submit" style="width: auto; padding: 8px 12px; margin: 2px;">50 retângulos</button>
-                    </form>
-                    
-                    <form method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="funcao" value="{{ funcao }}">
-                        <input type="hidden" name="limite_inferior" value="{{ limite_inferior }}">
-                        <input type="hidden" name="limite_superior" value="{{ limite_superior }}">
-                        <input type="hidden" name="retangulos" value="100">
-                        <button type="submit" style="width: auto; padding: 8px 12px; margin: 2px;">100 retângulos</button>
-                    </form>
-                </div>
+
+            <div class="form-group">
+                <label for="retangulos">Número de Retângulos:</label>
+                <input type="number" 
+                       name="retangulos" 
+                       id="retangulos" 
+                       value="{{ retangulos }}" 
+                       min="5" max="200">
             </div>
-        {% else %}
-            <!-- Instruções iniciais -->
-            <div class="visualizacao">
-                <h3>🎯 Instruções</h3>
-                <p>Digite uma função e configure os parâmetros acima, depois clique em "Calcular"</p>
-                <p><strong>Funções de exemplo:</strong></p>
-                <ul style="text-align: left; display: inline-block;">
-                    <li><code>x**2</code> - parábola simples</li>
-                    <li><code>sin(x)</code> - onda senoidal</li>
-                    <li><code>exp(x)</code> - crescimento exponencial</li>
-                    <li><code>x**3 - x</code> - função cúbica</li>
-                    <li><code>sqrt(x)</code> - raiz quadrada (x ≥ 0)</li>
-                </ul>
-                
-                <div style="background: #e7f3ff; padding: 15px; margin-top: 20px; border-radius: 4px;">
-                    <h4>💡 Dica:</h4>
-                    <p>Comece com <strong>x**2</strong> no intervalo <strong>[0, 2]</strong> com <strong>20 retângulos</strong></p>
-                    <p>O resultado deve dar aproximadamente <strong>2.67</strong> (valor exato = 8/3 ≈ 2.6667)</p>
-                </div>
+
+            <button type="submit">Calcular Integral</button>
+        </form>
+
+        <!-- Resultado -->
+        {% if resultado %}
+            <div class="resultado">
+                ∫<sub>{{ limite_inferior }}</sub><sup>{{ limite_superior }}</sup> {{ funcao }} dx ≈ {{ resultado|floatformat:6 }}
             </div>
         {% endif %}
-        
-        <!-- Voltar para cálculo preciso -->
-        <div style="text-align: center; margin-top: 30px;">
-            <a href="/calcular/" style="background: #17a2b8; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px;">
-                🧮 Ir para Cálculo Preciso
-            </a>
-        </div>
     </div>
 </body>
 </html>

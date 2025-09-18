@@ -81,33 +81,7 @@ def visualizar_integral(request):
         b = float(request.POST.get('limite_superior', 2))
         n = int(request.POST.get('retangulos', 20))
         
-        pontos_x = []
-        pontos_y = []
-        retangulos = []
-        
-        h = (b - a) / n
-        for i in range(n + 1):
-            x = a + i * h
-            try:
-                y = ajeita_funcao(funcao, x)
-                pontos_x.append(x)
-                pontos_y.append(y)
-            except:
-                continue
-        
-        for i in range(n):
-            x = a + i * h + h/2 
-            try:
-                y = ajeita_funcao(funcao, x)
-                retangulos.append({
-                    'x': a + i * h,
-                    'y': 0,
-                    'width': h,
-                    'height': abs(y)
-                })
-            except:
-                continue
-        
+        # Calcula apenas o valor da integral
         resultado = soma_riemann(funcao, a, b, n)
         
         context = {
@@ -116,22 +90,20 @@ def visualizar_integral(request):
             'limite_superior': b,
             'retangulos_num': n,
             'resultado': resultado,
-            'pontos_x': pontos_x,
-            'pontos_y': pontos_y,
-            'retangulos': retangulos,
         }
     
     return render(request, 'calculo_integral/visualizacao.html', context)
+
 def ajeita_funcao(funcao_str, x):
 
     funcao = funcao_str.replace('^', '**')
-    funcao = funcao.replace("ln", "log")  # ln vira log base e
+    funcao = funcao.replace("ln", "log") 
     
 
     ambiente = {"__builtins__": None, "x": x}
     
     for nome in dir(math):
-        if not nome.startswith("_"):  # ignora privados
+        if not nome.startswith("_"):  
             ambiente[nome] = getattr(math, nome)
 
     return eval(funcao, ambiente)

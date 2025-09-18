@@ -1,12 +1,13 @@
 # Calculadora de Integral
 
 Sistema web que calcula integrais usando o **Método dos Retângulos**.
-
+Projeto desenvolvido para a disciplina de Cálculo II.
+Professor: Renan Santos
 ## Como rodar
 
 ```bash
-# Instalar Django
-pip install django
+# Instalar dependências
+pip install -r requirements.txt
 
 # Configurar banco
 python manage.py makemigrations

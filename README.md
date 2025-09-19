@@ -6,8 +6,6 @@ Projeto desenvolvido para a disciplina de Cálculo II.
 
 Professor: Renan Santos
 
-
-
 ## Como rodar
 
 ```bash
@@ -45,3 +43,5 @@ python manage.py test calculo_integral
 **Método**: Divide a área em retângulos pequenos e soma tudo.
 
 Feito para calcular integrais de funções elementares com precisão.
+
+Obrigada pela atenção

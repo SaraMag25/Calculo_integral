@@ -6,7 +6,7 @@ Projeto desenvolvido para a disciplina de Cálculo II.
 
 Professor: Renan Santos
 
-LINK VIDEO:
+
 
 ## Como rodar
 
